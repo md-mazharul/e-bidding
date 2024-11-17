@@ -45,4 +45,35 @@ public class ItemController {
 
 
     }
+    @GetMapping("/items/{id}")
+    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
+        Item item = itemService.getItemById(id);
+        if (item != null) {
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PutMapping("/items/{id}")
+    public ResponseEntity<String> updateItem(@PathVariable Long id, @RequestBody Item updatedItem) {
+        boolean isUpdated = itemService.updateItem(id, updatedItem);
+        if (isUpdated) {
+            return new ResponseEntity<>("Item updated successfully!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Item not found or could not be updated!", HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("/items/{id}")
+    public ResponseEntity<String> delteItem(@PathVariable Long id){
+        boolean isDeleted = itemService.deleteItemById(id);
+        if(isDeleted){
+            return new ResponseEntity<>("Item deleted successfully!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Item not found!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
 }
