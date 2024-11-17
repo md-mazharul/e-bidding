@@ -4,6 +4,8 @@ import com.example.demo.entity.Item;
 import com.example.demo.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ItemService {
 
@@ -22,6 +24,9 @@ public class ItemService {
     */
     public Item createItem(Item item) {
         return itemRepository.save(item);
+    }
+    public List<Item> getAllItems() {
+        return itemRepository.findAll();
     }
 
 
