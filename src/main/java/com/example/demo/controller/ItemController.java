@@ -5,10 +5,7 @@ import com.example.demo.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,13 +18,16 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @PostMapping("/item")
-    public ResponseEntity<String> setItem(@RequestBody Item item) {
-        if (!ObjectUtils.isEmpty(itemService.createItem(item))) {
-            return new ResponseEntity<>("item created !!", HttpStatus.OK);
+    @PostMapping("/items")
+    public ResponseEntity<?> createItem(@RequestBody Item item) {
+        Item createdItem  = itemService.createItem(item);
+        System.out.println(createdItem.toString());
+        if (!ObjectUtils.isEmpty(createdItem)) {
+            return new ResponseEntity<>(createdItem, HttpStatus.CREATED);
         }
         return new ResponseEntity<>("item NOT created !!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    /*
     @GetMapping("/items")
     public ResponseEntity<List<Item>> getAllItems() {
         List<Item> items = itemService.getAllItems();
@@ -37,5 +37,12 @@ public class ItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+     */
 
+    @GetMapping("/items")
+    public @ResponseBody List<Item> getAllItems() {
+        return itemService.getAllItem();
+
+
+    }
 }

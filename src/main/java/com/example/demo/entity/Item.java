@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "item-data")
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Item {
 
     @Id
@@ -22,6 +23,4 @@ public class Item {
     private Long price;
     private Double[] rating;
     private Double[] bidding;
-
-
 }

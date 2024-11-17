@@ -15,19 +15,15 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
-    /*
-    @Override
-    public String setItem(Item item) {
-        Item savedItem = itemRepository.save(item);
-        return "Item saved with ID: " + savedItem.getId();
-    }
-    */
+
     public Item createItem(Item item) {
         return itemRepository.save(item);
     }
-    public List<Item> getAllItems() {
+
+    public List<Item> getAllItem() {
         return itemRepository.findAll();
     }
+
 
 
 }
