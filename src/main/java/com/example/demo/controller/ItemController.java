@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Item;
+
 import com.example.demo.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +63,19 @@ public class ItemController {
         }
         return new ResponseEntity<>("Item not found or could not be updated!", HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/{id}/rating")
+    public ResponseEntity<String> addRating(@PathVariable Long id, @RequestBody Double newrating) {
+        boolean addrating = itemService.updateUser(id, newrating);
+        if(addrating){
+            return new ResponseEntity<>("Item deleted successfully!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Item not found!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
     @DeleteMapping("/items/{id}")
     public ResponseEntity<String> delteItem(@PathVariable Long id){

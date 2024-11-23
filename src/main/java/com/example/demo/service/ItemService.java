@@ -47,6 +47,39 @@ public class ItemService {
         return false;
     }
 
+
+    public boolean updateUser(Long id, Double newRating){
+        Optional<Item> existingUserOpt = itemRepository.findById(id);
+
+        if (existingUserOpt.isEmpty()) {
+            return false;
+        }
+        Item existingUser = existingUserOpt.get();
+
+        // Initialize ratings array if null
+        if (existingUser.getRating() == null) {
+            existingUser.setRating(new Double[]{newRating}); // Initialize with the new value
+        } else {
+            // Create a new array with an extra slot
+            Double[] existingRatings = existingUser.getRating();
+            Double[] updatedRatings = new Double[existingRatings.length + 1];
+
+            // Copy existing ratings to the new array
+            System.arraycopy(existingRatings, 0, updatedRatings, 0, existingRatings.length);
+
+            // Add the new rating
+            updatedRatings[existingRatings.length] = newRating;
+
+            // Update the user's ratings
+            existingUser.setRating(updatedRatings);
+        }
+
+        // Save updated user back to the database
+        itemRepository.save(existingUser);
+
+        return true;
+    }
+
     public boolean deleteItemById(Long id){
         if (itemRepository.existsById(id)) {
             itemRepository.deleteById(id);
@@ -55,7 +88,6 @@ public class ItemService {
         return false;
 
     }
-
 
 
 
