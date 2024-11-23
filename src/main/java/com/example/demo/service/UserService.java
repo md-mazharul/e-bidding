@@ -35,6 +35,8 @@ public class UserService{
             User existingUser = existingUserOpt.get();
 
             // Update fields
+            existingUser.setUsername(updatedUser.getUsername());
+            existingUser.setPassword(updatedUser.getPassword());
             existingUser.setEmail(updatedUser.getEmail());
             existingUser.setName(updatedUser.getName());
             existingUser.setPhone_number(updatedUser.getPhone_number());
