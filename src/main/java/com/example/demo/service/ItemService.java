@@ -48,20 +48,20 @@ public class ItemService {
     }
 
 
-    public boolean updateUser(Long id, Double newRating){
+    public boolean addnewrating(Long id, Double newRating){
         Optional<Item> existingUserOpt = itemRepository.findById(id);
 
         if (existingUserOpt.isEmpty()) {
             return false;
         }
-        Item existingUser = existingUserOpt.get();
+        Item existingItem = existingUserOpt.get();
 
         // Initialize ratings array if null
-        if (existingUser.getRating() == null) {
-            existingUser.setRating(new Double[]{newRating}); // Initialize with the new value
+        if (existingItem.getRating() == null) {
+            existingItem.setRating(new Double[]{newRating}); // Initialize with the new value
         } else {
             // Create a new array with an extra slot
-            Double[] existingRatings = existingUser.getRating();
+            Double[] existingRatings = existingItem.getRating();
             Double[] updatedRatings = new Double[existingRatings.length + 1];
 
             // Copy existing ratings to the new array
@@ -70,13 +70,43 @@ public class ItemService {
             // Add the new rating
             updatedRatings[existingRatings.length] = newRating;
 
-            // Update the user's ratings
-            existingUser.setRating(updatedRatings);
+            // Update the item's ratings
+            existingItem.setRating(updatedRatings);
         }
 
-        // Save updated user back to the database
-        itemRepository.save(existingUser);
+        // Save updated item back to the database
+        itemRepository.save(existingItem);
 
+        return true;
+    }
+    public boolean addnewbidding(Long id, Double newbidding) {
+        Optional<Item> existingUserOpt = itemRepository.findById(id);
+
+
+        if (existingUserOpt.isEmpty()) {
+            return false;
+        }
+        Item existingItem = existingUserOpt.get();
+
+        // Initialize biddng array if null
+        if (existingItem.getBidding() == null) {
+            existingItem.setBidding(new Double[]{newbidding}); // Initialize with the new value
+        } else {
+            // Create a new array with an extra slot
+            Double[] existingBidding = existingItem.getBidding();
+            Double[] updatedBidding = new Double[existingBidding.length + 1];
+
+            // Copy existing bidding to the new array
+            System.arraycopy(existingBidding, 0, updatedBidding, 0, existingBidding.length);
+
+            // Add the new bidding
+            updatedBidding[existingBidding.length] = newbidding;
+
+            // Update the item's bidding
+            existingItem.setBidding(updatedBidding);
+        }
+        // Save updated item back to the database
+        itemRepository.save(existingItem);
         return true;
     }
 
@@ -88,7 +118,6 @@ public class ItemService {
         return false;
 
     }
-
 
 
 

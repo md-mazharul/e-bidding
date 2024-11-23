@@ -66,14 +66,25 @@ public class ItemController {
 
     @PutMapping("/{id}/rating")
     public ResponseEntity<String> addRating(@PathVariable Long id, @RequestBody Double newrating) {
-        boolean addrating = itemService.updateUser(id, newrating);
+        boolean addrating = itemService.addnewrating(id, newrating);
         if(addrating){
-            return new ResponseEntity<>("Item deleted successfully!", HttpStatus.OK);
+            return new ResponseEntity<>("Rating add successfully!", HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>("Item not found!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Rating is not add", HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/{id}/bidding")
+    public ResponseEntity<String> addBidding(@PathVariable Long id, @RequestBody Double newbidding) {
+        boolean addrating = itemService.addnewbidding(id, newbidding);
+        if(addrating){
+            return new ResponseEntity<>("Bidding add successfully!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Bidding is not add", HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 
