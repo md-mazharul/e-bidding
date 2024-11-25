@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+
 @RestController
 public class ItemController {
 
@@ -46,13 +48,18 @@ public class ItemController {
 
 
     }
-    @GetMapping("/items/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-        Item item = itemService.getItemById(id);
+    @GetMapping("/items/{itemName}")
+    public ResponseEntity<?> getItemByName(@PathVariable String itemName) {
+        // Call the service to get the item
+        Item item = itemService.getItemByName(itemName);
+
+        // Check if the item is found
         if (item != null) {
-            return new ResponseEntity<>(item, HttpStatus.OK);
+            return ResponseEntity.ok(item); // HTTP 200 with the item
+        } else {
+            return ResponseEntity.status(404)
+                    .body("Item not found with name: " + itemName);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/items/{id}")

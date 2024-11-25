@@ -28,6 +28,15 @@ public class ItemService {
     public Item getItemById(Long id) {
         return itemRepository.findById(id).orElse(null);
     }
+    public Item getItemByName(String itemName) {
+        List<Item> allItems = getAllItem();
+        for (Item item : allItems) {
+            if (item.getName().equalsIgnoreCase(itemName)) {
+                return item;
+            }
+        }
+        return null; // Return null if no match is found
+    }
 
     public boolean updateItem(Long id, Item updatedItem) {
         Optional<Item> existingItemOpt = itemRepository.findById(id);
