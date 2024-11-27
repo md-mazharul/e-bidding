@@ -44,6 +44,18 @@ public class UserController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/{id}/favorite")
+    public ResponseEntity<String> addFavorite(@PathVariable Long id, @RequestBody String favorite) {
+        boolean addNewFavorite = userService.addNewFavorite(id, favorite);
+        if(addNewFavorite){
+            return new ResponseEntity<>("Favorite add successfully!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("Favorite is not add", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         boolean isUpdated = userService.updateUser(id, updatedUser);

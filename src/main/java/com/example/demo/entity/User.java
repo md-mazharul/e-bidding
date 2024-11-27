@@ -24,5 +24,9 @@ public class User {
     private String status;
     private Long suspend_number;
     private Double[] rating;
+    private String[] favorite;
+    private Double[] purchase;
+
+    private Long[] recent_view;
 
 }

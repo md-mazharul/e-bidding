@@ -58,12 +58,12 @@ public class ItemService {
 
 
     public boolean addnewrating(Long id, Double newRating){
-        Optional<Item> existingUserOpt = itemRepository.findById(id);
+        Optional<Item> existingItemOpt = itemRepository.findById(id);
 
-        if (existingUserOpt.isEmpty()) {
+        if (existingItemOpt.isEmpty()) {
             return false;
         }
-        Item existingItem = existingUserOpt.get();
+        Item existingItem = existingItemOpt.get();
 
         // Initialize ratings array if null
         if (existingItem.getRating() == null) {

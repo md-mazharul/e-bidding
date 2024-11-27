@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Item;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -48,5 +47,40 @@ public class UserService{
             return true;
         }
         return false;
+    }
+
+    public boolean addNewFavorite(Long id, String newFavorite){
+
+        Optional<User>existingUserOpt = userRepository.findById(id);
+
+        if (existingUserOpt.isEmpty()) {
+            return false;
+        }
+
+        User existingUser = existingUserOpt.get();
+
+        // Initialize favorite array if null
+        if (existingUser.getFavorite() == null) {
+            existingUser.setFavorite(new String[]{newFavorite}); // Initialize with the new value
+        }
+        else {
+            // Create a new array with extra slot
+            String[] existingFavorite = existingUser.getFavorite();
+            String[] updateFavorite = new String[existingFavorite.length+1];
+
+            // Copy existing favorite to the new array
+            System.arraycopy(existingFavorite,0,updateFavorite,0,existingFavorite.length);
+
+            // Add the nre favorite
+            updateFavorite[existingFavorite.length] = newFavorite;
+
+            // Update the user's favorite
+            existingUser.setFavorite(updateFavorite);
+
+        }
+        //Save updated favorite back to the database
+        userRepository.save(existingUser);
+
+        return true;
     }
 }
