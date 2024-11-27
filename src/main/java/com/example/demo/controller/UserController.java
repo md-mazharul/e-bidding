@@ -66,6 +66,19 @@ public class UserController {
         }
     }
 
+
+
+    @PutMapping("/{id}/purchase")
+    public ResponseEntity<String> addPurchase(@PathVariable Long id, @RequestBody Long purchase) {
+        boolean addPurchase = userService.addPurchase(id, purchase);
+        if(addPurchase){
+            return new ResponseEntity<>("purchase add successfully!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("purchase is not add", HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         boolean isUpdated = userService.updateUser(id, updatedUser);

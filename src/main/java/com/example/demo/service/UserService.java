@@ -48,7 +48,6 @@ public class UserService{
         }
         return false;
     }
-
     public boolean addNewFavorite(Long id, String newFavorite){
 
         Optional<User>existingUserOpt = userRepository.findById(id);
@@ -119,4 +118,40 @@ public class UserService{
 
         return true;
     }
+
+
+    public boolean addPurchase(Long id, Long newPurchase) {
+
+        // Fetch the user by ID
+        Optional<User> existingUserOpt = userRepository.findById(id);
+
+        // Check if the user exists
+        if (existingUserOpt.isEmpty()) {
+            return false;
+        }
+
+        // Get the existing user object
+        User existingUser = existingUserOpt.get();
+
+        // Handle the Purchase array
+        Long[] existingPurchases = existingUser.getPurchase();
+        if (existingPurchases == null) {
+            // If null, initialize with a single-element array containing the new purchase
+            existingUser.setPurchase(new Long[]{newPurchase});
+        } else {
+            // Resize and update the array with the new purchase
+            Long[] updatedPurchases = new Long[existingPurchases.length + 1];
+            System.arraycopy(existingPurchases, 0, updatedPurchases, 0, existingPurchases.length);
+            updatedPurchases[existingPurchases.length] = newPurchase;
+
+            // Update the user's Purchase array
+            existingUser.setPurchase(updatedPurchases);
+        }
+
+        // Save the updated user back to the repository
+        userRepository.save(existingUser);
+
+        return true;
+    }
+
 }
