@@ -83,4 +83,40 @@ public class UserService{
 
         return true;
     }
+
+
+    public boolean addRecentView(Long id, Long recentViews){
+
+        Optional<User>existingUserOpt = userRepository.findById(id);
+
+        if (existingUserOpt.isEmpty()) {
+            return false;
+        }
+
+        User existingUser = existingUserOpt.get();
+
+        // Initialize recentViews array if null
+        if (existingUser.getRecent_view() == null) {
+            existingUser.setRecent_view(new Long[]{recentViews}); // Initialize with the new value
+        }
+        else {
+            // Create a new array with extra slot
+            Long[] existingRecentViews = existingUser.getRecent_view();
+            Long[] updateRecentViews = new Long[existingRecentViews.length+1];
+
+            // Copy existing recentViews to the new array
+            System.arraycopy(existingRecentViews,0,updateRecentViews,0,existingRecentViews.length);
+
+            // Add the nre recentViews
+            updateRecentViews[existingRecentViews.length] = recentViews;
+
+            // Update the user's recentViews
+            existingUser.setRecent_view(updateRecentViews);
+
+        }
+        //Save updated recentViews back to the database
+        userRepository.save(existingUser);
+
+        return true;
+    }
 }

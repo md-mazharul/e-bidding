@@ -55,6 +55,16 @@ public class UserController {
             return new ResponseEntity<>("Favorite is not add", HttpStatus.NOT_FOUND);
         }
     }
+    @PutMapping("/{id}/recentViews")
+    public ResponseEntity<String> addRecentViews(@PathVariable Long id, @RequestBody Long recentViews) {
+        boolean addRecentViews = userService.addRecentView(id, recentViews);
+        if(addRecentViews){
+            return new ResponseEntity<>("recentView add successfully!", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("recentViews is not add", HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
