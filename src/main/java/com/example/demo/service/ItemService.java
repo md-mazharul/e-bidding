@@ -33,10 +33,14 @@ public class ItemService {
     }
 
     public Item getItemByName(String itemName) {
-        List<Item> items = itemRepository.findByName(itemName);
+        List<Item> items = getAllItem();
 
-        logger.info(items.get(0).getPrice() + " " + items.get(0).getName());
-        return items.get(0);
+        for(Item item : items){
+            if(item.getName().equals(itemName)){
+                return item;
+            }
+        }
+        return null;
     }
 
     public boolean updateItem(Long id, Item updatedItem) {

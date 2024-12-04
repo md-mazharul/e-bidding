@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Item;
 
+import com.example.demo.entity.User;
 import com.example.demo.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,13 +43,22 @@ public class ItemController {
 
      */
 
+    @GetMapping("/items/{id}")
+    public ResponseEntity<Item> getItemById(@PathVariable Long id) {
+        Item item = itemService.getItemById(id);
+        if (item != null) {
+            return new ResponseEntity<>(item, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @GetMapping("/items")
     public @ResponseBody List<Item> getAllItems() {
         return itemService.getAllItem();
 
 
     }
-    @GetMapping("/items/{itemName}")
+    @GetMapping("/by-itemname/{itemName}")
     public ResponseEntity<?> getItemByName(@PathVariable String itemName) {
         // Call the service to get the item
         Item item = itemService.getItemByName(itemName);
