@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Item;
 import com.example.demo.repository.ItemRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Optional;
 public class ItemService {
 
     private final ItemRepository itemRepository;
+    private Logger logger = LoggerFactory.getLogger(ItemService.class);
 
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
@@ -28,14 +31,12 @@ public class ItemService {
     public Item getItemById(Long id) {
         return itemRepository.findById(id).orElse(null);
     }
+
     public Item getItemByName(String itemName) {
-        List<Item> allItems = getAllItem();
-        for (Item item : allItems) {
-            if (item.getName().equalsIgnoreCase(itemName)) {
-                return item;
-            }
-        }
-        return null; // Return null if no match is found
+        List<Item> items = itemRepository.findByName(itemName);
+
+        logger.info(items.get(0).getPrice() + " " + items.get(0).getName());
+        return items.get(0);
     }
 
     public boolean updateItem(Long id, Item updatedItem) {
@@ -57,7 +58,7 @@ public class ItemService {
     }
 
 
-    public boolean addnewrating(Long id, Double newRating){
+    public boolean addnewrating(Long id, Double newRating) {
         Optional<Item> existingItemOpt = itemRepository.findById(id);
 
         if (existingItemOpt.isEmpty()) {
@@ -88,6 +89,7 @@ public class ItemService {
 
         return true;
     }
+
     public boolean addnewbidding(Long id, Double newbidding) {
         Optional<Item> existingUserOpt = itemRepository.findById(id);
 
@@ -119,7 +121,7 @@ public class ItemService {
         return true;
     }
 
-    public boolean deleteItemById(Long id){
+    public boolean deleteItemById(Long id) {
         if (itemRepository.existsById(id)) {
             itemRepository.deleteById(id);
             return true;
@@ -127,7 +129,6 @@ public class ItemService {
         return false;
 
     }
-
 
 
 }

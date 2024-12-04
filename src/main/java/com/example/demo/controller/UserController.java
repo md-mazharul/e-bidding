@@ -78,6 +78,17 @@ public class UserController {
             return new ResponseEntity<>("purchase is not add", HttpStatus.NOT_FOUND);
         }
     }
+    @PostMapping("/{id}/history")
+    public ResponseEntity<String> addItemToHistory(@PathVariable Long id, @RequestParam String itemName) {
+
+        boolean isAdded = userService.addItemToBlogList(id, itemName);
+
+        if (isAdded) {
+            return ResponseEntity.ok("Item added to user's history successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+    }
 
     @PutMapping("/users/{id}")
     public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
@@ -86,6 +97,18 @@ public class UserController {
             return new ResponseEntity<>("User updated successfully!", HttpStatus.OK);
         } else {
             return new ResponseEntity<>("User not found or could not be updated!", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/by-username/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username) {
+        User user = userService.findUsername(username);
+        // Check if the item is found
+        if (user != null) {
+            return ResponseEntity.ok(user); // HTTP 200 with the item
+        } else {
+            return ResponseEntity.status(404)
+                    .body("Item not found with name: " + user);
         }
     }
 

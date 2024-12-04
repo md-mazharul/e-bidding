@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,10 +25,24 @@ public class User {
     private Long phone_number;
     private String status;
     private Long suspend_number;
+
     private Double[] rating;
     private String[] favorite;
     private Long[] purchase;
-
     private Long[] recent_view;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<BidHistory> blogList;
+
+
+
+
+
+    /*
+    private List<Double> rating;
+    private List<String> favorite;
+    private List<Long> purchase;
+    private List<Long> recent_view;
+
+     */
 
 }

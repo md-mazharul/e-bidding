@@ -23,4 +23,5 @@ public class Item {
     private Long price;
     private Double[] rating;
     private Double[] bidding;
+    //TODO: LIST
 }

@@ -1,19 +1,36 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.BidHistory;
+import com.example.demo.entity.Item;
+import com.example.demo.repository.BidHistoryRepository;
+import com.example.demo.service.ItemService;
 import com.example.demo.entity.User;
+import com.example.demo.repository.ItemRepository;
 import com.example.demo.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+
+
 @Service
-public class UserService{
+public class UserService {
 
     private final UserRepository userRepository;
+    private final ItemService itemService;
 
-    public UserService(UserRepository userRepository) {
+    private Logger logger = LoggerFactory.getLogger(ItemService.class);
+
+
+
+    public UserService(UserRepository userRepository, ItemService itemService) {
         this.userRepository = userRepository;
+        this.itemService = itemService;
     }
 
     public User createUser(User user) {
@@ -25,6 +42,7 @@ public class UserService{
 
     }
     public User getUserById(Long id) {
+
         return userRepository.findById(id).orElse(null);
     }
 
@@ -48,9 +66,10 @@ public class UserService{
         }
         return false;
     }
-    public boolean addNewFavorite(Long id, String newFavorite){
 
-        Optional<User>existingUserOpt = userRepository.findById(id);
+    public boolean addNewFavorite(Long id, String newFavorite) {
+
+        Optional<User> existingUserOpt = userRepository.findById(id);
 
         if (existingUserOpt.isEmpty()) {
             return false;
@@ -61,14 +80,13 @@ public class UserService{
         // Initialize favorite array if null
         if (existingUser.getFavorite() == null) {
             existingUser.setFavorite(new String[]{newFavorite}); // Initialize with the new value
-        }
-        else {
+        } else {
             // Create a new array with extra slot
             String[] existingFavorite = existingUser.getFavorite();
-            String[] updateFavorite = new String[existingFavorite.length+1];
+            String[] updateFavorite = new String[existingFavorite.length + 1];
 
             // Copy existing favorite to the new array
-            System.arraycopy(existingFavorite,0,updateFavorite,0,existingFavorite.length);
+            System.arraycopy(existingFavorite, 0, updateFavorite, 0, existingFavorite.length);
 
             // Add the nre favorite
             updateFavorite[existingFavorite.length] = newFavorite;
@@ -84,9 +102,9 @@ public class UserService{
     }
 
 
-    public boolean addRecentView(Long id, Long recentViews){
+    public boolean addRecentView(Long id, Long recentViews) {
 
-        Optional<User>existingUserOpt = userRepository.findById(id);
+        Optional<User> existingUserOpt = userRepository.findById(id);
 
         if (existingUserOpt.isEmpty()) {
             return false;
@@ -97,14 +115,13 @@ public class UserService{
         // Initialize recentViews array if null
         if (existingUser.getRecent_view() == null) {
             existingUser.setRecent_view(new Long[]{recentViews}); // Initialize with the new value
-        }
-        else {
+        } else {
             // Create a new array with extra slot
             Long[] existingRecentViews = existingUser.getRecent_view();
-            Long[] updateRecentViews = new Long[existingRecentViews.length+1];
+            Long[] updateRecentViews = new Long[existingRecentViews.length + 1];
 
             // Copy existing recentViews to the new array
-            System.arraycopy(existingRecentViews,0,updateRecentViews,0,existingRecentViews.length);
+            System.arraycopy(existingRecentViews, 0, updateRecentViews, 0, existingRecentViews.length);
 
             // Add the nre recentViews
             updateRecentViews[existingRecentViews.length] = recentViews;
@@ -153,5 +170,52 @@ public class UserService{
 
         return true;
     }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
+
+    public boolean addItemToBlogList(Long userId, String itemName) {
+
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            return false; // User not found
+        }
+
+        Item item = itemService.getItemByName(itemName);
+
+
+        User user = optionalUser.get();
+        List<BidHistory> historyList = new ArrayList<>();
+
+        // Add entries to the list
+        BidHistory bidHistory = new BidHistory();
+        bidHistory.setUserId(user.getId());
+        bidHistory.setItemName(item.getName());
+        bidHistory.setPrice(item.getPrice());
+        historyList.add(bidHistory);
+
+
+        user.setBlogList(historyList);
+
+
+        userRepository.save(user);
+
+        return true;
+    }
+
+    public User findUsername(String username){
+        List<User> users = getAllUsers();
+
+        for (User user : users){
+            if(user.getUsername().equals(username)){
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+
 
 }
