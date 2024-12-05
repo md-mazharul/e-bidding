@@ -111,6 +111,14 @@ public class UserController {
                     .body("Item not found with name: " + user);
         }
     }
+    @GetMapping("/check-credentials")
+    public boolean checkCredentials(
+            @RequestParam String username,
+            @RequestParam String password) {
+
+        // Call the CheckUsernamePassword method with the provided parameters
+        return userService.CheckUsernamePassword(username, password);
+    }
 
 
 }

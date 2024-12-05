@@ -215,6 +215,33 @@ public class UserService {
 
         return null;
     }
+    public boolean findPassword(String password){
+        List<User> users = getAllUsers();
+
+        for (User user : users){
+            if(user.getPassword().equals(password)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean CheckUsernamePassword(String username, String password){
+
+        List<User> users = getAllUsers();
+
+
+        for (User user : users){
+            if(user.getUsername().equals(username)){
+                if(user.getPassword().equals(password)){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
 
 
