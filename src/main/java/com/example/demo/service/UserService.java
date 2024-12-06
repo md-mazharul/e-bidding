@@ -228,19 +228,28 @@ public class UserService {
     }
 
     public boolean CheckUsernamePassword(String username, String password){
-
         List<User> users = getAllUsers();
-
-
+        int i= 0;
         for (User user : users){
-            if(user.getUsername().equals(username)){
-                if(user.getPassword().equals(password)){
-                    return true;
-                }
-            }
-        }
+            i = i+1;
+            // Check if the username matches
+            if (user.getUsername().equals(username)) {
+                // If username matches, check the password
+                return user.getPassword().equals(password);
+            } else if (i == users.size() -1) {
+                return false;
+            } 
 
+        }
         return false;
+    }
+
+
+    public User AddUsernamePassword(String username, String password){
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        return userRepository.save(user);
     }
 
 

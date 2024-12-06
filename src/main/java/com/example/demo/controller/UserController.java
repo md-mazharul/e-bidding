@@ -111,14 +111,26 @@ public class UserController {
                     .body("Item not found with name: " + user);
         }
     }
-    @GetMapping("/check-credentials")
+
+    @GetMapping("/check_usernamepassword/{username}/{password}")
     public boolean checkCredentials(
-            @RequestParam String username,
-            @RequestParam String password) {
+            @PathVariable String username,
+            @PathVariable String password) {
 
         // Call the CheckUsernamePassword method with the provided parameters
         return userService.CheckUsernamePassword(username, password);
     }
+    @PostMapping("/add_UsernamePassword/{username}/{password}")
+    public ResponseEntity<String> addUsernamePassword(
+            @PathVariable String username,
+            @PathVariable String password) {
+        if (!ObjectUtils.isEmpty(userService.AddUsernamePassword(username, password))){
+            return new ResponseEntity<>("user created !!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("user NOT created !!", HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
 
 
 }
