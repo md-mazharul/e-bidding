@@ -113,12 +113,19 @@ public class UserController {
     }
 
     @GetMapping("/check_usernamepassword/{username}/{password}")
-    public boolean checkCredentials(
+    public ResponseEntity<?> checkCredentials(
             @PathVariable String username,
             @PathVariable String password) {
 
         // Call the CheckUsernamePassword method with the provided parameters
-        return userService.CheckUsernamePassword(username, password);
+        //return userService.CheckUsernamePassword(username, password);
+        User user = userService.CheckUsernamePassword(username, password);
+        if (user != null) {
+            return ResponseEntity.ok(user); // Return user if credentials match
+        } else {
+            return ResponseEntity.status(404)
+                    .body("Username not found with name: " + user);
+        }
     }
     @PostMapping("/add_UsernamePassword/{username}/{password}")
     public ResponseEntity<String> addUsernamePassword(

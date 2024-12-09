@@ -227,21 +227,21 @@ public class UserService {
         return false;
     }
 
-    public boolean CheckUsernamePassword(String username, String password){
+    public User CheckUsernamePassword(String username, String password){
         List<User> users = getAllUsers();
-        int i= 0;
-        for (User user : users){
-            i = i+1;
+        for (User user : users) {
             // Check if the username matches
             if (user.getUsername().equals(username)) {
                 // If username matches, check the password
-                return user.getPassword().equals(password);
-            } else if (i == users.size() -1) {
-                return false;
-            } 
-
+                if (user.getPassword().equals(password)) {
+                    return user; // Return the user if both username and password match
+                } else {
+                    return null; // Return null if username matches but password doesn't
+                }
+            }
         }
-        return false;
+        // Return null if no user matches the username
+        return null;
     }
 
 
