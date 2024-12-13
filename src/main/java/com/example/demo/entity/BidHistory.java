@@ -26,5 +26,5 @@ public class BidHistory {
     private long price;
     private String bidStatus;
 
-    //Todo: Add Create Data
+
 }
